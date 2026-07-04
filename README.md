@@ -21,7 +21,7 @@
 
 **CartGenie** is a fully functional, AI-driven shopping assistant operating simultaneously on [Telegram](https://t.me/CartGenieAI_bot) and a [Web Chat Interface](https://cartgenie.bot.nu). Designed to operate entirely at zero infrastructure cost, it automates e-commerce product research, sentiment-based review extraction, price monitoring, and personalized gift brainstorming through simple natural language conversation.
 
-> **Note:** This is a portfolio showcase repository. The core implementation is kept in a private repository to protect proprietary scraping mechanics and API configurations. Detailed developer notes can be found in the [notes/](notes/) directory.
+> **Note:** This is a portfolio showcase repository. The core implementation is kept in a private repository to protect proprietary scraping mechanics and API configurations.
 
 ---
 
