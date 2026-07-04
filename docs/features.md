@@ -69,7 +69,7 @@ stateDiagram-v2
     SaveWishlist --> Saved: Direct save
     Saved --> [*]: Tracker active
     
-    note right of ProposeAction: Escape hatch: new text message cancels pending state
+    note right of ProposeAction: Escape hatch - new text message cancels pending state
 ```
 
 ### Background Monitoring
