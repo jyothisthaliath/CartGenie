@@ -76,7 +76,13 @@ For a high-level visual walkthrough of how the system routes client requests, ma
 
 ## 📝 Release History / Changelog
 
-### **Version 2.0 (Latest Release)**
+### **Version 3.0 (Latest Release)**
+- **Decoupled Modular Framework:** Refactored the core application architecture from a monolithic state machine to a modular agent framework.
+- **Connectors & Core Engine:** Implemented channel-agnostic Connectors (Telegram, Web) that generate standard Events for a unified Core Engine dispatcher.
+- **Plugin Registry:** Isolated all core business logic into decoupled Python plugins (Skills) loaded dynamically by a Plugin Registry.
+- **Declarative Flows:** Employed a Strangler Fig migration strategy to incrementally replace hardcoded conversation logic with declarative YAML-based flow configurations.
+
+### **Version 2.0 (Theme & UI Update)**
 - **User Interface Overhaul:** Added a sleek, responsive theme toggle (light/dark mode) with persistent preference saving.
 - **Mobile optimization:** Redesigned the web sidebar layout into a collapsible drawer menu for screens under 768px.
 - **UI Enhancements:** Introduced inline command button formatting, interactive list options, and clean custom scrollbars.
