@@ -12,21 +12,24 @@ CartGenie is designed to be **async-first and lightweight**, routing traffic fro
 
 ```mermaid
 graph TD
-    TG[📱 Telegram User] -->|Telegram Bot API| BotCore[🤖 Unified Bot Application]
-    Web[🌐 Web Browser User] -->|Web API Bridge| BotCore
+    TG[📱 Telegram User] -->|Telegram Connector| Core[⚙️ Core Engine]
+    Web[🌐 Web Browser User] -->|Web Connector| Core
     
-    BotCore -->|1. Understand Intent| LLM[🧠 Groq LLM / Fallback Parser]
-    BotCore -->|2. Scrape Products| Scraper[🕷️ Playwright Stealth Scraper]
-    BotCore -->|3. Save Trackers| DB[(💾 SQLite Database)]
+    Core -->|Dispatches Events| Registry[🔌 Plugin Registry]
+    Registry -->|Routes to Skill| Skills[🧩 Business Skills]
+    
+    Skills -->|Skill: Search| LLM[🧠 Groq LLM / Fallback Parser]
+    Skills -->|Skill: Amazon| Scraper[🕷️ Playwright Stealth Scraper]
+    Skills -->|Skill: Tracker| DB[(💾 SQLite Database)]
 ```
 
-### Dynamic Web-to-Bot Bridge
+### Decoupled Modular Framework
 
-Instead of writing separate application flows for Telegram and Web chat channels, the server translates browser HTTP requests into mock Telegram event objects. 
+Instead of writing monolithic application flows for Telegram and Web chat channels, CartGenie uses a decoupled agent framework. **Connectors** translate requests into standard state-agnostic events, which are processed by the **Core Engine**. The Engine relies on a **Plugin Registry** to dynamically load and route these events to specialized **Skills**.
 
 This design choice ensures:
-- **100% Feature Parity:** Every feature updates simultaneously on both platforms.
-- **Zero Code Duplication:** The web frontend interacts with the exact same state machine and modules as the Telegram bot.
+- **100% Feature Parity:** Every feature updates simultaneously on both platforms since they all route through the same Core Engine.
+- **Extensibility:** New conversational flows and capabilities can be added as simple YAML/JSON files or standalone Python Skills without modifying core bot infrastructure.
 
 ---
 
