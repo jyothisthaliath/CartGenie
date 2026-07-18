@@ -34,10 +34,10 @@ Just paste 2 or 3 Amazon product links into the chat. CartGenie runs a parallel 
 Get an instant pros and cons breakdown for any product by asking CartGenie to summarize its reviews. The assistant extracts real buyer feedback, groups sentences by positive and negative themes, and provides a clear recommendation verdict.
 
 ### 📉 Smart Price Alerts
-Send a product link to monitor its price. Set a target price threshold, and CartGenie's background checker will alert you via push notification the moment the price drops. You can also save products directly to a personal wishlist.
+Send an Amazon or Flipkart product link to monitor its price. Set a target price threshold, and CartGenie's background checker will alert you via push notification the moment the price drops. You can also save products directly to a personal wishlist.
 
 ### 🔍 Natural Language Smart Search
-Tell the assistant what you need in plain terms (e.g., *"best noise-cancelling headphones under ₹5,000"*). CartGenie parses the query, identifies category boundaries to filter out unrelated accessories, and ranks search results using a proximity-to-budget valuation model.
+Tell the assistant what you need in plain terms (e.g., *"best noise-cancelling headphones under ₹5,000"*). CartGenie parses the query, identifies category boundaries to filter out unrelated accessories, and ranks search results using a proximity-to-budget valuation model on Amazon & Flipkart.
 
 ### 🎁 Multi-Step Gift Helper
 Struggling to find a gift? Type `gift` to start a simple conversational helper that collects budget, recipient, and occasion constraints. It performs live web research to discover trending suggestions, brainstorms categories, and presents direct product suggestions.
@@ -62,7 +62,7 @@ Struggling to find a gift? Type `gift` to start a simple conversational helper t
 
 - **Core Engine:** Python 3.11 with `asyncio` for concurrent scraping and non-blocking message processing.
 - **Scraping Pipeline:** Playwright (Headless Chromium) configured with custom stealth modules.
-- **Language Intelligence:** Groq LLM API (Llama 3.3 70B) for parsing buyer intents, backed by a robust local regex fallback parser.
+- **Language Intelligence:** Groq LLM API (Llama 3.3 70B) for intent parsing, dynamically integrated with a self-hosted local LLM proxy (FreeLLMAPI) for intelligence-heavy tasks, and backed by a robust local regex fallback parser.
 - **Data Persistence:** SQLite database via `aiosqlite` for lightweight, transaction-safe storage.
 - **Delivery Channels:** `python-telegram-bot` for messaging, and `aiohttp` for serving the Web Chat REST API.
 
@@ -76,7 +76,12 @@ For a high-level visual walkthrough of how the system routes client requests, ma
 
 ## 📝 Release History / Changelog
 
-### **Version 3.0 (Latest Release)**
+### **Version 3.1 (Latest Release - Local LLM Routing & Flipkart Support)**
+- **Dynamic Selective Routing:** Configured the bot to route intelligence-intensive tasks (gift category brainstorming and search modifier generation) to a self-hosted local LLM proxy (FreeLLMAPI) using a port-based connectivity health check, with automatic fallback to Groq.
+- **Flipkart Store Integration:** Added complete price tracking, catalog search, and wishlist support for Flipkart alongside Amazon.
+- **UX Loading Indicators:** Implemented dynamic "thinking..." message prompts and native Telegram "typing" action feedback to improve the user experience during LLM processing.
+
+### **Version 3.0 (Architecture Refactor)**
 - **Decoupled Modular Framework:** Refactored the core application architecture from a monolithic state machine to a modular agent framework.
 - **Connectors & Core Engine:** Implemented channel-agnostic Connectors (Telegram, Web) that generate standard Events for a unified Core Engine dispatcher.
 - **Plugin Registry:** Isolated all core business logic into decoupled Python plugins (Skills) loaded dynamically by a Plugin Registry.
@@ -90,4 +95,4 @@ For a high-level visual walkthrough of how the system routes client requests, ma
 ### **Version 1.0 (Core Launch)**
 - **Platform Release:** Launched primary shopping capabilities: multi-link comparison, review summarization, price tracking, natural language search, and the gift curation helper.
 - **Bridges:** Implemented the web-to-bot chat bridge, utilizing mock Telegram updates to achieve 100% feature parity between Web and Telegram.
-- **Monetization:** Integrated automated affiliate tag injection for all outgoing Amazon URLs.
+- **Monetization:** Integrated automated affiliate tag injection for all outgoing Amazon or Flipkart URLs.

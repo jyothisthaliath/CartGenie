@@ -18,8 +18,8 @@ graph TD
     Core -->|Dispatches Events| Registry[🔌 Plugin Registry]
     Registry -->|Routes to Skill| Skills[🧩 Business Skills]
     
-    Skills -->|Skill: Search| LLM[🧠 Groq LLM / Fallback Parser]
-    Skills -->|Skill: Amazon| Scraper[🕷️ Playwright Stealth Scraper]
+    Skills -->|Skill: Search| LLM[🧠 Groq / Local Proxy / Fallback]
+    Skills -->|Skill: Store| Scraper[🕷️ Playwright Stealth Scraper]
     Skills -->|Skill: Tracker| DB[(💾 SQLite Database)]
 ```
 
@@ -39,7 +39,7 @@ CartGenie manages multi-step interactions (such as collecting gift details or co
 
 ```mermaid
 graph TD
-    Msg([User Message]) --> URLCheck{Contains Amazon URL?}
+    Msg([User Message]) --> URLCheck{Contains Amazon/Flipkart URL?}
     
     URLCheck -->|Yes| RouteURL[Route directly to Comparison / Review Summary]
     URLCheck -->|No| StateCheck{Awaiting Slot Input?}
@@ -79,11 +79,11 @@ graph LR
 
 ### 1. Custom Stealth Scraping vs. Paid APIs
 - **Tradeoff:** Commercial product data APIs are highly reliable but charge monthly fees.
-- **Decision:** To maintain a $0 budget, CartGenie uses a custom Playwright configuration utilizing user-agent cycling, persistent browser context sharing, and stealth headers to query Amazon directly. If blocked, the bot gracefully falls back to sharing clean affiliate links directly.
+- **Decision:** To maintain a $0 budget, CartGenie uses a custom Playwright configuration utilizing user-agent cycling, persistent browser context sharing, and stealth headers to query Amazon & Flipkart directly. If blocked, the bot gracefully falls back to sharing clean affiliate links directly.
 
-### 2. LLM Parsing with Local Fallbacks
-- **Tradeoff:** Relying solely on external LLM APIs (like Groq) risks downtime due to API rate limits or network issues.
-- **Decision:** All user queries are processed by the LLM for high accuracy, but are supported by a local regex-based keyword parser. If the API limits are hit, the local fallback immediately routes key actions so the bot remains functional.
+### 2. LLM Parsing & Local Proxy Routing
+- **Tradeoff:** Relying solely on external LLM APIs (like Groq) risks downtime due to API rate limits, while running entirely on local VPS resources can be slower.
+- **Decision:** User queries are parsed dynamically. Selective routing is implemented to send intelligence-intensive brainstorming tasks (such as gift categories and search modifiers) to a self-hosted local LLM proxy (FreeLLMAPI), while standard intent parsing runs on Groq for sub-second latency. A local regex-based keyword parser acts as an instantaneous fallback if any API is unreachable.
 
 ### 3. Sentence-level Sentiment Tagging
 - **Tradeoff:** Full LLM review processing is slow and expensive for long review text.
