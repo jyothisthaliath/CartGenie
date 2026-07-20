@@ -36,11 +36,14 @@ Get an instant pros and cons breakdown for any product by asking CartGenie to su
 ### 📉 Smart Price Alerts
 Send an Amazon or Flipkart product link to monitor its price. Set a target price threshold, and CartGenie's background checker will alert you via push notification the moment the price drops. You can also save products directly to a personal wishlist.
 
-### 🔍 Natural Language Smart Search
-Tell the assistant what you need in plain terms (e.g., *"best noise-cancelling headphones under ₹5,000"*). CartGenie parses the query, identifies category boundaries to filter out unrelated accessories, and ranks search results using a proximity-to-budget valuation model on Amazon & Flipkart.
+### 🔍 Natural Language Smart Search & Unbiased Ingestion
+Tell the assistant what you need in plain terms (e.g., *"best camera phone under 1 lac"*). CartGenie pre-parses Indian slang budgets, queries Amazon & Flipkart concurrently, interleaves raw results into an unbiased 10-candidate pool using a round-robin algorithm (`[AMZN_1, FK_1...]`), runs batch review analytics via Playwright scrapers, and ranks top items on merit.
 
 ### 🎁 Multi-Step Gift Helper
 Struggling to find a gift? Type `gift` to start a simple conversational helper that collects budget, recipient, and occasion constraints. It performs live web research to discover trending suggestions, brainstorms categories, and presents direct product suggestions.
+
+### 📊 Standalone Real-Time Analytics Dashboard
+Visit `https://cartgenie.bot.nu/dashboard` to view live activity stats (DAU, WAU, MAU) and interactive Chart.js graphs mapping interaction trends and platform breakdown.
 
 ---
 
@@ -61,10 +64,10 @@ Struggling to find a gift? Type `gift` to start a simple conversational helper t
 ## 🛠️ Technology Stack
 
 - **Core Engine:** Python 3.11 with `asyncio` for concurrent scraping and non-blocking message processing.
-- **Scraping Pipeline:** Playwright (Headless Chromium) configured with custom stealth modules.
-- **Language Intelligence:** Groq LLM API (Llama 3.3 70B) for intent parsing, dynamically integrated with a self-hosted local LLM proxy (FreeLLMAPI) for intelligence-heavy tasks, and backed by a robust local regex fallback parser.
-- **Data Persistence:** SQLite database via `aiosqlite` for lightweight, transaction-safe storage.
-- **Delivery Channels:** `python-telegram-bot` for messaging, and `aiohttp` for serving the Web Chat REST API.
+- **Scraping Pipeline:** Playwright (Headless Chromium) for Amazon & Flipkart live page specs and customer review harvesting.
+- **Language Intelligence:** Groq LLM API (Llama 3.3 70B) for intent parsing with early NLP Indian slang budget pre-parsing (`1 lac` $\rightarrow$ `100000`).
+- **Data Persistence:** SQLite database via `aiosqlite` for transaction-safe storage, including `user_activity` analytics logging.
+- **Delivery Channels:** `python-telegram-bot` for messaging, and `aiohttp` for serving the Web Chat REST API and `/dashboard` stats page.
 
 ---
 
@@ -76,7 +79,13 @@ For a high-level visual walkthrough of how the system routes client requests, ma
 
 ## 📝 Release History / Changelog
 
-### **Version 3.1 (Latest Release - Local LLM Routing & Flipkart Support)**
+### **Version 3.1.1 (Latest Release - Overhauled Aggregation & Flipkart Playwright Scraper)**
+- **Playwright Flipkart Scraper:** Enabled Playwright headless browser automation for Flipkart product pages to harvest specs and customer reviews.
+- **Unbiased Search Aggregation:** Overhauled the search pipeline to query Amazon & Flipkart concurrently, interleave candidates round-robin into a 10-product pool, execute early filtering, run batch review analytics, and rank top items on merit.
+- **Early NLP Slang Budget Parser:** Added `pre_parse_slang_budget` to map regional slang like `1 lac` or `1.5 lakhs` to integer budgets (`100000`, `150000`) before intent parsing.
+- **Standalone Analytics Dashboard:** Added dedicated page at `/dashboard` displaying DAU/WAU/MAU metrics and platform breakdown charts.
+
+### **Version 3.1.0 (Local LLM Routing & Flipkart Support)**
 - **Dynamic Selective Routing:** Configured the bot to route intelligence-intensive tasks (gift category brainstorming and search modifier generation) to a self-hosted local LLM proxy (FreeLLMAPI) using a port-based connectivity health check, with automatic fallback to Groq.
 - **Flipkart Store Integration:** Added complete price tracking, catalog search, and wishlist support for Flipkart alongside Amazon.
 - **UX Loading Indicators:** Implemented dynamic "thinking..." message prompts and native Telegram "typing" action feedback to improve the user experience during LLM processing.
