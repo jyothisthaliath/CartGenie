@@ -18,7 +18,7 @@ graph TD
     Core -->|Dispatches Events| Registry[🔌 Plugin Registry]
     Registry -->|Routes to Skill| Skills[🧩 Business Skills]
     
-    Skills -->|Skill: Search| LLM[🧠 Groq / Slang Pre-Parser / Local Proxy]
+    Skills -->|Skill: Search| LLM[🧠 Groq / Phase 4.5 LLM Deduplicator / Local Proxy]
     Skills -->|Skill: Store| Scraper[🕷️ Playwright Stealth Scraper (Amazon & Flipkart)]
     Skills -->|Skill: Tracker| DB[(💾 SQLite Database)]
     Skills -->|Skill: Dashboard| DB

@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-2.0-8b5cf6?style=flat-square" alt="Version 2.0"/>
+  <img src="https://img.shields.io/badge/Version-3.2-8b5cf6?style=flat-square" alt="Version 3.2"/>
   <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python"/>
   <img src="https://img.shields.io/badge/Docker-Containerised-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker"/>
   <img src="https://img.shields.io/badge/Status-Live_in_Production-10b981?style=flat-square" alt="Status"/>
@@ -36,8 +36,8 @@ Get an instant pros and cons breakdown for any product by asking CartGenie to su
 ### 📉 Smart Price Alerts
 Send an Amazon or Flipkart product link to monitor its price. Set a target price threshold, and CartGenie's background checker will alert you via push notification the moment the price drops. You can also save products directly to a personal wishlist.
 
-### 🔍 Natural Language Smart Search & Unbiased Ingestion
-Tell the assistant what you need in plain terms (e.g., *"best camera phone under 1 lac"*). CartGenie pre-parses Indian slang budgets, queries Amazon & Flipkart concurrently, interleaves raw results into an unbiased 10-candidate pool using a round-robin algorithm (`[AMZN_1, FK_1...]`), runs batch review analytics via Playwright scrapers, and ranks top items on merit.
+### 🔍 Natural Language Smart Search & Cross-Platform Deduplication
+Tell the assistant what you need in plain terms (e.g., *"best camera phone under 1 lac"*). CartGenie pre-parses Indian slang budgets, queries Amazon & Flipkart concurrently, interleaves raw results into an unbiased candidate pool, runs Playwright scrapers, and executes **Phase 4.5 LLM Clustering** to group identical items into Unified Product Entities with dual-store links and combined review sentiment.
 
 ### 🎁 Multi-Step Gift Helper
 Struggling to find a gift? Type `gift` to start a simple conversational helper that collects budget, recipient, and occasion constraints. It performs live web research to discover trending suggestions, brainstorms categories, and presents direct product suggestions.
@@ -79,7 +79,12 @@ For a high-level visual walkthrough of how the system routes client requests, ma
 
 ## 📝 Release History / Changelog
 
-### **Version 3.1.1 (Latest Release - Overhauled Aggregation & Flipkart Playwright Scraper)**
+### **Version 3.2.0 (Latest Release - Phase 4.5 Cross-Platform Deduplication & Unified Products)**
+- **LLM-Based Product Clustering:** Introduced Phase 4.5 using LLM-driven fuzzy matching to group exact identical products across Amazon and Flipkart into a single Unified Product Entity.
+- **Unified Pricing & Multi-Store Buttons:** Automatically selects the lowest available price across platforms and generates dual-store purchase buttons (`[Buy on Flipkart]` / `[Buy on Amazon]`) on the UI.
+- **Cross-Platform Review Aggregation:** Merges review pools and calculates a weighted average star rating across platforms to reward popular cross-store items in the ranking engine.
+
+### **Version 3.1.1 (Overhauled Aggregation & Flipkart Playwright Scraper)**
 - **Playwright Flipkart Scraper:** Enabled Playwright headless browser automation for Flipkart product pages to harvest specs and customer reviews.
 - **Unbiased Search Aggregation:** Overhauled the search pipeline to query Amazon & Flipkart concurrently, interleave candidates round-robin into a 10-product pool, execute early filtering, run batch review analytics, and rank top items on merit.
 - **Early NLP Slang Budget Parser:** Added `pre_parse_slang_budget` to map regional slang like `1 lac` or `1.5 lakhs` to integer budgets (`100000`, `150000`) before intent parsing.
